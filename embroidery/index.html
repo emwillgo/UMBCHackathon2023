@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Wheel</title>
+    <style>
+    @import url('../css/wheel.css');
+    </style>
+
+</head>
+<body>
+    <div class="wheel-container", id="wheel">
+        <div class="wheel">
+            <canvas id="wheel-canvas" width="600" height="600"></canvas>
+            <div class="pointer-container"></div>
+            <div class="center-circle"></div>
+        </div>
+        <div class="top-triangle"></div> <!-- Black triangle outside the canvas -->
+
+        <button class="spin-button" onclick="spinWheel()" autofocus>Spin!</button>
+
+    </div>
+    
+
+    <script>
+        // Your JavaScript logic here
+        const items = ["lazy daisy", "simple flower", "lavender flower", "heart", "cool flower", "dog", "winnie the pooh", "panda", "elephant", "basket", "unicorn", "bee", "butterfly", "ladybug", "tree", "penguin", "xmas penguin", "fox", "fruits", "strawberries", "strawberry basket", "grape", "easy flower", "turtle", "car"]
+        const urls = ["https://youtu.be/2pYtAKpRlTM?si=qGsfyoq6Hxu-Tqyo", "https://youtu.be/eyIEc1lu6HY?si=cLN7_LLBjO8LgpqM", "https://youtu.be/CI64kt-fdj4?si=LYEt8QTp5mcOtWvH", "https://youtu.be/nOshEqlcsOI?si=Mnp6kM5p0fv9Dh7S", "https://youtu.be/sndAiL33dPE?si=lwtOKABBLBR2uutc", "https://youtu.be/01rHjIPAayY?si=watN-x3DQeQG7DFI", "https://youtu.be/8cJBHQxGV-8?si=R9rHkcMRCT1tWIQ1", "https://youtu.be/BLsViYPqxlY?si=p59HQrMXUdy7XegF", "https://youtu.be/NjLNRirNOXk?si=I6-jRwT4ryiGexqs", "https://www.youtube.com/watch?v=i9AvU--8gNw", "https://youtu.be/yVkXvmgu5-c?si=1q_rr0s9Xlapvzw0", "https://youtu.be/x9CoOrVrIbE?si=blbd5qSABg-xhF7X", "https://youtu.be/vpMpd6tXfl0?si=-UYaBU_Q7g7N9Eqj", "https://youtu.be/-LjHmAhiYXY?si=A8fcSMSgLpttLivd", "https://www.youtube.com/watch?v=48Ir-v123Jg", "https://youtu.be/RsNM88rBLxA?si=OEWzgkceckO81zoj", "https://youtu.be/Ps16Mznp_20?si=6yo9N4wthBe9nRYB", "https://youtu.be/Y85u5gzd6p0?si=bAPRgtxVEYa-E_Vt", "https://youtu.be/ajH_Erv7rWo?si=hqxm7E50_MoOQj--", "https://youtu.be/CjW1vx2qTwM?si=YmCdiKOtVslzqJKT", "https://youtu.be/yBWAiVTEL6Q?si=37DyWZkEOs-B7pBj", "https://youtu.be/JaLc30bmYjg?si=9fQsC-9izwFT6q_8", "https://youtube.com/shorts/m7gbzQEPMGo?si=Z7KdW4sDs3NKkwvk", "https://youtu.be/jNptk12OBpo?si=990fnPEXEG7zZBu7", "https://youtu.be/gDzXN9nb9TI?si=_PcbPHX1HfLE4lW-"]
+    </script>
+    <script src="../js/wheel.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Wheel</title>
+    <style>
+    @import url('../css/wheel.css');
+    </style>
+
+</head>
+<body>
+    <div class="wheel-container", id="wheel">
+        <div class="wheel">
+            <canvas id="wheel-canvas" width="600" height="600"></canvas>
+            <div class="pointer-container"></div>
+            <div class="center-circle"></div>
+        </div>
+        <div class="top-triangle"></div> <!-- Black triangle outside the canvas -->
+
+        <button class="spin-button" onclick="spinWheel()" autofocus>Spin!</button>
+
+    </div>
+    
+
+    <script>
+        // Your JavaScript logic here
+        const items = ["abstract heart", "valentine’s day tic tac toe", "bluebird", "lavender field sunset", "rose bush window", "tulips", "lemons", "watermelon", "strawberries", "carrots", "cloudy sky", "northern lights", "city", "turtle", "dolphin", "palm trees", "snowy mountain", "scenic sunset", "firefly jar", "ladybug on flower", "shell with pearl", "rainbow", "lampposts", "lighthouse"]
+        const urls = ["https://www.youtube.com/watch?v=T0ot1odOfk4&pp=ygUlYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGhlYXJ0cw%3D%3D", "https://www.youtube.com/watch?v=d74tktfVq6c&pp=ygUlYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGhlYXJ0cw%3D%3D", "https://www.youtube.com/watch?v=vGQYBOGdwWA&pp=ygUjYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGJpcmQ%3D", "https://www.youtube.com/watch?v=Tk6qQmsrQwM&pp=ygUlYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGZsb3dlcg%3D%3D", " https://www.youtube.com/watch?v=KpwogSxc9SQ&pp=ygUlYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGZsb3dlcg%3D%3D", "https://www.youtube.com/watch?v=akTKvXnrsQ4&pp=ygUlYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGZsb3dlcg%3D%3D", "https://www.youtube.com/watch?v=xDo6XRVJm6A&pp=ygUkYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGZydWl0", "https://www.youtube.com/watch?v=x96SFYT8Bz0&pp=ygUkYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGZydWl0", "https://www.youtube.com/watch?v=_O_3XFNE7KE&pp=ygUpYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIHN0cmF3YmVycnk%3D", "https://www.youtube.com/watch?v=5TysUC8qDFg&pp=ygUmYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGNhcnJvdHM%3D", "https://www.youtube.com/watch?v=hLxYz5da4fU&pp=ygUiYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIHNreQ%3D%3D", "https://www.youtube.com/watch?v=B1GLIy2ru5s&pp=ygUiYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIHNreQ%3D%3D", "https://www.youtube.com/watch?v=5_4tDPJbnOE&pp=ygUjYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGNpdHk%3D", "https://www.youtube.com/watch?v=MF4eMq2hKKc&pp=ygUlYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIHR1cnRsZQ%3D%3D", "https://www.youtube.com/watch?v=4-yZtL21AsM&pp=ygUmYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGRvbHBoaW4%3D", "https://i.ytimg.com/vi/xQVrVSFqYHU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAfJVJCVS-v8kmonazCtGGQ1VizYw", "https://www.youtube.com/watch?v=9HDKoPEiFf4&pp=ygUnYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIG1vdW50YWlu", "https://www.youtube.com/watch?v=CgEp1il3kUs&pp=ygUnYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIG1vdW50YWlu", "https://www.youtube.com/watch?v=iRKYyyDp14Q&pp=ygUkYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzICBidWdz", "https://www.youtube.com/watch?v=ngA_4dzZMJ0&pp=ygUkYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzICBidWdz", "https://www.youtube.com/watch?v=nq1rFc06d1E&pp=ygUlYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIHNoZWxscw%3D%3D", "https://www.youtube.com/watch?v=W3t5J3g1wFU&pp=ygUmYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIHJhaW5ib3c%3D", "https://www.youtube.com/watch?v=tkS1Sehw4BM&pp=ygUjYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIHJhaW4%3D", "https://www.youtube.com/watch?v=rT9cMzXlHwo&pp=ygUpYWNyeWxpYyBwYWludGluZyBmb3IgYmVnaW5uZXJzIGxpZ2h0aG91c2U%3D"]
+    </script>
+    <script src="../js/wheel.js"></script>
+
+</body>
+</html>
