@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Wheel</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+
+            background-image: url('../images/background.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Hide any overflow */
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 100%; /* Adjust the width as needed */
+            max-width: 650px; /* Maximum width for the wheel */
+            height: 0;
+            padding-bottom: 100%; /* Maintain a 1:1 aspect ratio for the canvas */
+            overflow: hidden; /* Hide any overflow */
+            margin-top: 125vh; /* Adjust the top margin as needed */
+        }
+
+        .spin-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .wheel {
+            position: relative;
+            border: 4px solid #333; /* Circle border */
+            border-radius: 50%; /* Make it a circle */
+            overflow: hidden; /* Hide any overflow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pointer-container {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 26px solid transparent; /* 30% larger */
+            border-right: 26px solid transparent; /* 30% larger */
+            border-top: 52px solid black; /* 30% larger; Black triangle pointing down */
+            transition: none; /* No transition for the pointer */
+        }
+
+        .top-triangle {
+            position: absolute;
+            top: -30px; /* Adjust the distance from the top to position mostly outside the circle */
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg); /* Flip the triangle */
+            width: 0;
+            height: 0;
+            border-left: 26px solid transparent; /* 30% larger */
+            border-right: 26px solid transparent; /* 30% larger */
+            border-bottom: 52px solid black; /* 30% larger; Black triangle pointing up */
+        }
+
+        #wheel-canvas {
+            width: 100%;
+            height: 100%;
+            transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1); 
+        }
+        .center-circle {
+            position: absolute;
+            width: 12px; /* Adjust the size as needed */
+            height: 12px; /* Adjust the size as needed */
+            background-color: black;
+            border-radius: 50%; /* Make it a circle */
+            top: calc(50% - 6px); /* Position it in the center vertically */
+            left: calc(50% - 6px); /* Position it in the center horizontally */
+            z-index: 1; /* Place it above the canvas */
+        }
+
+        button {
+            display: inline-block;
+            outline: 0;
+            border: none;
+            cursor: pointer;
+            padding: 0 24px;
+            border-radius: 50px;
+            min-width: 200px;
+            height: 50px;
+            font-size: 18px;
+            background-color: #fd0;
+            font-weight: 500;
+            color: #222;
+
+            margin:0 auto;
+            display:block;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="wheel-container", id="wheel">
+        <div class="wheel">
+            <canvas id="wheel-canvas" width="600" height="600"></canvas>
+            <div class="pointer-container"></div>
+            <div class="center-circle"></div>
+        </div>
+        <div class="top-triangle"></div> <!-- Black triangle outside the canvas -->
+
+        <button class="spin-button" onclick="spinWheel()" autofocus>Spin!</button>
+
+    </div>
+    
+
+    <script>
+        // Your JavaScript logic here
+        const items = ["monkey","snowflake","dog","sword","flower","bear","pumpkin","swan","dachshund","frog","sea turtle","parrot","wand","rabbit","mouse","toothbrush","chair","cat","star","tiger","snail","moon","love bear","butterfly"];
+        const urls = ["https://www.youtube.com/watch?v=FpNXi--Fj7M", "https://www.youtube.com/watch?v=IDDXQfMbIiU", "https://www.youtube.com/watch?v=nmVEjx1DCqk&t=3s", "https://www.youtube.com/watch?v=r1ifZejBYZs", "https://www.youtube.com/watch?v=Fy3aNH4Gbsk", "https://www.youtube.com/watch?v=Vua9LJIiahY", "https://www.youtube.com/watch?v=-ktqczln6eo", "https://www.youtube.com/watch?v=7Yd9zQB_sQg", "https://www.youtube.com/watch?v=nHe9pAqlAKs", "https://www.youtube.com/watch?v=0vxBUSyKeOc", "https://www.youtube.com/watch?v=U1PlR4Vz7v4", "https://www.youtube.com/watch?v=j8YAn-4ggP4", "https://www.youtube.com/watch?v=JWEVnmFkR7A", "https://www.youtube.com/watch?v=MhAEIC4ZznI", "https://www.youtube.com/watch?v=YdxRfn-2a6E", "https://www.youtube.com/watch?v=SmaZv4kM1j8&t=355s", "https://www.youtube.com/watch?v=s2_qCvLo6qo", "https://www.youtube.com/watch?v=uFDeRwRhkGg", "https://www.youtube.com/watch?v=y7VkJtjYmYQ", "https://i.ytimg.com/vi/F0HraAiLRp0/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLByI17eA70lRC-Fbn3X2jxyqBJ8_g", "https://i.ytimg.com/vi/cE2qD3scFqk/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDG6UHdJNqNjLMl02bxVEWlL0aS4w", "https://www.youtube.com/watch?v=c_yXMLbNbmg", "https://www.youtube.com/watch?v=QEAbgK7F0XY", "https://www.youtube.com/watch?v=LnfmWbeg2wk"]
+        const colors = ["#FFD699", "#FFB6C1", "#AEC6CF", "#C2B280"]; // Slightly lighter pastel colors
+        const canvas = document.getElementById("wheel-canvas");
+        const pointerContainer = document.querySelector(".pointer-container");
+        const ctx = canvas.getContext("2d");
+
+        const wheelRadius = canvas.width / 2;
+        const centerX = wheelRadius;
+        const centerY = wheelRadius;
+        const sliceAngle = (2 * Math.PI) / items.length;
+
+        let currentRotation = 0; // Track the current rotation angle
+
+        // Function to draw a wheel segment
+        function drawSegment(startAngle, endAngle, color, text) {
+            // Draw black lines between segments
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, wheelRadius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.strokeStyle = "#000"; // Black color for lines
+            ctx.lineWidth = 2; // Line width
+            ctx.stroke();
+
+            // Fill segment with color
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, wheelRadius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Draw text
+            const textRadius = wheelRadius * .82; // Adjust the text position
+            const angle = (startAngle + endAngle) / 2; // No need to rotate text
+            const x = centerX + textRadius * Math.cos(angle);
+            const y = centerY + textRadius * Math.sin(angle);
+
+            ctx.save(); // Save the current canvas state
+            ctx.translate(x, y); // Translate to the text position
+            ctx.rotate(angle); // Rotate text by 90 degrees within its slice
+            ctx.fillStyle = "white"; // White text color
+            ctx.font = "16px Arial"; // Adjust font size
+            ctx.textAlign = "center"; // Center-align text
+            ctx.fillText(text, 0, 0); // Draw text at (0, 0)
+            ctx.restore(); // Restore the canvas state
+        }
+
+        
+        // Draw the wheel segments
+        items.forEach((item, index) => {
+            const startAngle = index * sliceAngle;
+            const endAngle = startAngle + sliceAngle;
+            const color = colors[index % colors.length];
+            drawSegment(startAngle, endAngle, color, item);
+        });
+
+
+        function spinWheel() {
+            randomDegree = 3600 + Math.floor(Math.random() * 3600); // Random rotation between 3600 - 7200 degrees
+
+            canvas.style.transform = `rotate(${randomDegree}deg)`;
+
+            // Prevent multiple spins by disabling the button
+            document.querySelector(".spin-button").hidden = true;
+
+
+            let selectedSegment = (Math.floor((19 - (randomDegree % 360) / (360 / items.length))) + items.length) % items.length;
+
+            // If selectedSegment is 0, set it to items.length
+            if (selectedSegment === 0) {
+                selectedSegment = items.length;
+            }
+
+            selectedItem = items[selectedSegment - 1];
+
+            canvas.addEventListener('transitionend', () => {
+                console.log("Selected Item:", selectedItem);
+                console.log("URL: ", urls[selectedSegment - 1]);
+
+                function sleep(ms) {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                }
+
+                sleep(400).then(() => { 
+                    document.getElementById('wheel').style.animation="shake 0.5s infinite"; 
+                    sleep(750).then(() => { 
+                        window.location.href = urls[selectedSegment - 1];
+                    });
+                });  
+            });
+        }
+    </script>
+</body>
+</html>
